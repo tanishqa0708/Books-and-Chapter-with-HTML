@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter & Coffee - Checkout</title>
+    <style>
+        :root {
+            --beige: #f5f5dc;
+            --dark-beige: #e6e0c1;
+            --brown: #5c4033;
+            --light-brown: #a17a69;
+            --white: #ffffff;
+            --black: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        body {
+            background-color: var(--beige);
+            color: var(--brown);
+            line-height: 1.6;
+        }
+
+        .page-wrapper {
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .background-image.active {
+            opacity: 1;
+        }
+
+        .background-image:not(.active) {
+            opacity: 0;
+        }
+
+        header {
+            background-color: rgba(92, 64, 51, 0.9);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--beige);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .hero {
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: linear-gradient(rgba(245, 245, 220, 0.8), rgba(245, 245, 220, 0.9));
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--brown);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .checkout-form {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--brown);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--light-brown);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--light-brown);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .order-summary {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            align-self: flex-start;
+            position: sticky;
+            top: 120px;
+        }
+
+        .order-items {
+            margin-bottom: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--dark-beige);
+        }
+
+        .order-item-title {
+            margin-right: 1rem;
+        }
+
+        .order-item-price {
+            font-weight: bold;
+        }
+
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        .order-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-brown);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--brown);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1.5rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--light-brown);
+        }
+
+        footer {
+            background-color: var(--brown);
+            color: var(--beige);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--beige);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-brown);
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Background Images Slider -->
+        <div class="background-images">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c0a8db1b-082d-497e-b2c8-92af4b868a66.png" alt="Cozy bookstore cafe interior with wooden shelves, warm lighting, and comfortable seating" class="background-image active">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dac1a8dd-1274-4832-953d-59f2338fe41c.png" alt="Rustic cafe table with open books, a steaming coffee cup, and reading glasses" class="background-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/becfaf47-2f51-46f9-9331-7e4508b94045.png" alt="Reading nook by a large window with comfortable chairs and stacks of books" class="background-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/553b9799-e5c0-4c8b-8c23-6f2b43e9bd62.png" alt="Vintage bookstore corner with wooden ladder and floor-to-ceiling shelves" class="background-image">
+        </div>
+
+        <header>
+            <nav>
+                <div class="logo">Chapter & Coffee</div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#services">Services</a>
+                    <a href="index.html#locations">Locations</a>
+                    <a href="books.html">Book Rental</a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Complete Your Rental</h1>
+            <p>Please fill out the form below to complete your book rental</p>
+        </section>
+
+        <div class="container">
+            <div class="checkout-container">
+                <div class="checkout-form">
+                    <h2 class="section-title">Customer Information</h2>
+                    <form id="paymentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">Zip Code</label>
+                                <input type="text" id="zip" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="area">Area</label>
+                            <select id="area" required>
+                                <option value="">Select Area</option>
+                                <option value="US">Pune</option>
+                                <option value="CA">Viman Nagar</option>
+                                <option value="UK">KP</option>
+                                <option value="AU">Baner</option>
+                                <option value="IN">Hinjewadi</option>
+                                <option value="JP">Chinchwad</option>
+                                <option value="FR">FC Road</option>
+                                <option value="DE">Jp Road</option>
+                                <option value="IT">Shinghagad</option>
+                                <option value="ES">Pimpri</option>
+                            </select>
+                        </div>
+
+                        <h2 class="section-title" style="margin-top: 3rem;">Payment Details</h2>
+                        <div class="form-group">
+                            <label for="cardName">Name on Card</label>
+                            <input type="text" id="cardName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" required placeholder="1234 5678 9012 3456">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expDate">Expiration Date</label>
+                                <input type="text" id="expDate" required placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="checkout-btn">Complete Order</button>
+                    </form>
+                </div>
+
+                <div class="order-summary">
+                    <h3 class="section-title">Order Summary</h3>
+                    <div class="order-items" id="orderItems">
+                        <!-- Order items will be populated here -->
+                    </div>
+                    <div class="order-summary-row">
+                        <span>Subtotal:</span>
+                        <span id="orderSubtotal">0.00</span>
+                    </div>
+                    <div class="order-summary-row">
+                        <span>Shipping:</span>
+                        <span>0.00</span>
+                    </div>
+                    <div class="order-summary-row">
+                        <span>Tax:</span>
+                        <span id="orderTax">0.00</span>
+                    </div>
+                    <div class="order-summary-row order-total">
+                        <span>Total:</span>
+                        <span id="orderTotal">0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Chapter & Coffee</h3>
+                        <p>Where every book comes with a perfect brew.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="index.html#services">Services</a></li>
+                            <li><a href="index.html#locations">Locations</a></li>
+                            <li><a href="books.html">Book Rental</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Contact</h3>
+                        <ul>
+                            <li>info@chaptercoffee.com</li>
+                            <li>+91 748572****</li>
+                            <li>123 Literary Lane</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>Made by Taishqa ☕ - Chapter & Coffee</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Background image cycling
+        const backgroundImages = document.querySelectorAll('.background-image');
+        let currentImageIndex = 0;
+
+        function cycleBackgroundImages() {
+            backgroundImages[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+            backgroundImages[currentImageIndex].classList.add('active');
+        }
+
+        setInterval(cycleBackgroundImages, 5000);
+
+        // Order summary functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderItems = document.getElementById('orderItems');
+            const orderSubtotal = document.getElementById('orderSubtotal');
+            const orderTax = document.getElementById('orderTax');
+            const orderTotal = document.getElementById('orderTotal');
+
+            // Retrieve cart from localStorage
+            const cart = JSON.parse(localStorage.getItem('bookCart')) || [];
+            
+            if (cart.length === 0) {
+                orderItems.innerHTML = '<p>Your cart is empty</p>';
+                return;
+            }
+
+            // Populate order items
+            orderItems.innerHTML = '';
+            cart.forEach(item => {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                orderItem.innerHTML = `
+                    <div class="order-item-title">${item.title} (×${item.quantity})</div>
+                    <div class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                `;
+                orderItems.appendChild(orderItem);
+            });
+
+            // Calculate totals
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + tax;
+
+            orderSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+            orderTax.textContent = `$${tax.toFixed(2)}`;
+            orderTotal.textContent = `$${total.toFixed(2)}`;
+
+            // Handle form submission
+            document.getElementById('paymentForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Process payment and order
+                localStorage.removeItem('bookCart');
+                alert('Thank you for your order! Your books will be ready for pickup at your selected location.');
+                window.location.href 
+        </script>

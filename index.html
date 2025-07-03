@@ -1,0 +1,689 @@
+<!-- I'll create a multi-page bookstore cafe website with:
+
+1. Main page (index.html) with login/signup and subscription form
+2. Books page (books.html) featuring book rentals with cart functionality
+3. Checkout page (checkout.html)
+
+Here are the three complete files:
+
+```
+index.html
+books.html
+checkout.html
+```
+
+First, let's create the main index.html with login/subscription:
+
+```
+index.html
+```
+
+``` -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter & Coffee - Home</title>
+    <style>
+        :root {
+            --beige: #f5f5dc;
+            --dark-beige: #e6e0c1;
+            --brown: #5c4033;
+            --light-brown: #a17a69;
+            --white: #ffffff;
+            --black: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        body {
+            background-color: var(--beige);
+            color: var(--brown);
+            line-height: 1.6;
+        }
+
+        .page-wrapper {
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .background-images {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .background-image.active {
+            opacity: 1;
+        }
+
+        .background-image:not(.active) {
+            opacity: 0;
+        }
+
+        header {
+            background-color: rgba(92, 64, 51, 0.9);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--beige);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+
+        .auth-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--beige);
+            background-color: transparent;
+            color: var(--beige);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background-color: var(--beige);
+            color: var(--brown);
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            background: linear-gradient(rgba(245, 245, 220, 0.8), rgba(245, 245, 220, 0.9));
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--brown);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--brown);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 2px solid var(--brown);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--brown);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--brown);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--light-brown);
+            margin: 0.8rem auto;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--light-brown);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .locations {
+            background-color: var(--dark-beige);
+            padding: 4rem 2rem;
+        }
+
+        .location-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .location-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .location-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .location-info {
+            padding: 1.5rem;
+        }
+
+        .location-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subscription {
+            background-color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .subscription-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.8rem;
+            border: 1px solid var(--light-brown);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .subscribe-btn {
+            padding: 1rem;
+            background-color: var(--brown);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subscribe-btn:hover {
+            background-color: var(--light-brown);
+        }
+
+        .login-modal, .signup-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: var(--brown);
+            color: var(--beige);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--beige);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--white);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-brown);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .auth-buttons {
+                margin-left: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Background Images Slider -->
+        <div class="background-images">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c0a8db1b-082d-497e-b2c8-92af4b868a66.png" alt="Cozy bookstore cafe interior with wooden shelves, warm lighting, and comfortable seating" class="background-image active">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/dac1a8dd-1274-4832-953d-59f2338fe41c.png" alt="Rustic cafe table with open books, a steaming coffee cup, and reading glasses" class="background-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/becfaf47-2f51-46f9-9331-7e4508b94045.png" alt="Reading nook by a large window with comfortable chairs and stacks of books" class="background-image">
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/553b9799-e5c0-4c8b-8c23-6f2b43e9bd62.png" alt="Vintage bookstore corner with wooden ladder and floor-to-ceiling shelves" class="background-image">
+        </div>
+
+        <header>
+            <nav>
+                <div class="logo">Chapter & Coffee</div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="#services">Services</a>
+                    <a href="#locations">Locations</a>
+                    <a href="books.html">Book Rental</a>
+                    <a href="#contact">Contact</a>
+                    <div class="auth-buttons">
+                        <button class="auth-btn" id="loginBtn">Login</button>
+                        <button class="auth-btn" id="signupBtn">Sign Up</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <section class="hero" id="home">
+            <h1>Books & Brews</h1>
+            <p>Discover our curated collection of books available for rent while enjoying artisanal coffee in cozy reading spaces across the city.</p>
+            <a href="books.html" class="btn">Browse Books</a>
+        </section>
+
+        <section class="container" id="services">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services">
+                <div class="service-card">
+                    <div class="service-icon">📚</div>
+                    <h3>Book Rentals</h3>
+                    <p>Rent books for a week or a month at affordable prices. Return them at any of our locations.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">☕</div>
+                    <h3>Café Lounges</h3>
+                    <p>Enjoy premium coffee, tea, and snacks in our comfortable reading spaces.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎭</div>
+                    <h3>Literary Events</h3>
+                    <p>Join our book clubs, author readings, and literary discussion groups.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Mobile Checkout</h3>
+                    <p>Manage your rentals through our easy-to-use mobile app or website.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="locations" id="locations">
+            <div class="container">
+                <h2 class="section-title">Our Locations</h2>
+                <div class="location-cards">
+                    <div class="location-card">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/910ea6ff-c527-4c31-bb9d-e36ee7b05142.png" alt="Downtown bookstore cafe location with exposed brick walls and industrial decor" class="location-img">
+                        <div class="location-info">
+                            <h3>Downtown Bookverse</h3>
+                            <p>123 Baner</p>
+                            <p>Open 7am-9pm Daily</p>
+                        </div>
+                    </div>
+                    <div class="location-card">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3a142a03-3508-4cb4-8b4d-575dd6c7a4de.png" alt="Waterfront cafe location with panoramic windows overlooking the harbor" class="location-img">
+                        <div class="location-info">
+                            <h3>Harbor Brews</h3>
+                            <p>Shighagad</p>
+                            <p>Open 8am-8pm Daily</p>
+                        </div>
+                    </div>
+                    <div class="location-card">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ab8aae5f-facd-4ffa-bc79-428def5aaecd.png" alt="Garden cafe location with outdoor reading patio surrounded by greenery" class="location-img">
+                        <div class="location-info">
+                            <h3>Garden Pages</h3>
+                            <p>Nigdi</p>
+                            <p>Open 9am-7pm Daily</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="subscription">
+            <div class="container">
+                <h2 class="section-title">Subscribe to Our Newsletter</h2>
+                <form class="subscription-form">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Your Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subscription">Subscription Type</label>
+                        <select id="subscription">
+                            <option value="basic">Basic (Monthly Updates)</option>
+                            <option value="premium">Premium (Weekly Updates + Offers)</option>
+                            <option value="vip">VIP (Events Invitations + Exclusive Deals)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="subscribe-btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Login Modal -->
+        <div class="login-modal" id="loginModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeLogin">&times;</span>
+                <h2 style="margin-bottom: 1.5rem; color: var(--brown);">Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="subscribe-btn" style="width: 100%; margin-top: 1rem;">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div class="signup-modal" id="signupModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeSignup">&times;</span>
+                <h2 style="margin-bottom: 1.5rem; color: var(--brown);">Create Account</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName">Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="subscribe-btn" style="width: 100%; margin-top: 1rem;">Sign Up</button>
+                </form>
+            </div>
+        </div>
+
+        <footer id="contact">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Chapter & Coffee</h3>
+                        <p>Where every book comes with a perfect brew.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#locations">Locations</a></li>
+                            <li><a href="books.html">Book Rental</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h3>Contact</h3>
+                        <ul>
+                            <li>info@chaptercoffee.com</li>
+                            <li>(555) 123-4567</li>
+                            <li>123 Literary Lane</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>Made by Tanishqa ☕-Chapter & Coffee.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Background image cycling
+        const backgroundImages = document.querySelectorAll('.background-image');
+        let currentImageIndex = 0;
+
+        function cycleBackgroundImages() {
+            backgroundImages[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+            backgroundImages[currentImageIndex].classList.add('active');
+        }
+
+        setInterval(cycleBackgroundImages, 5000);
+
+        // Modal functionality
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const closeSignup = document.getElementById('closeSignup');
+
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+            signupModal.style.display = 'none';
+        });
+
+        signupBtn.addEventListener('click', () => {
+            signupModal.style.display = 'flex';
+            loginModal.style.display = 'none';
+        });
+
+        closeLogin.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        closeSignup.addEventListener('click', () => {
+            signupModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+            if (e.target === signupModal) {
+                signupModal.style.display = 'none';
+            }
+        });
+
+        // Form submissions
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Login successful!');
+            loginModal.style.display = 'none';
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Account created successfully!');
+            signupModal.style.display = 'none';
+        });
+
+        document.querySelector('.subscription-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for subscribing!');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
+
+
