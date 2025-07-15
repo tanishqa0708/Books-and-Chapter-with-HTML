@@ -880,10 +880,10 @@
                         <img src="${item.image}" alt="${item.title}" class="cart-item-img">
                         <div>
                             <div class="cart-item-title">${item.title}</div>
-                            <div>$${item.price.toFixed(2)} × ${item.quantity}</div>
+                            <div>Rs.${item.price.toFixed(2)} × ${item.quantity}</div>
                         </div>
                     </div>
-                    <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                    <div class="cart-item-price">Rs.${(item.price * item.quantity).toFixed(2)}</div>
                     <div class="remove-item" data-id="${item.id}">✕</div>
                 `;
                 
@@ -894,9 +894,9 @@
             const tax = subtotal * 0.08; // 8% tax
             const total = subtotal + tax;
             
-            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-            cartTax.textContent = `$${tax.toFixed(2)}`;
-            cartTotal.textContent = `$${total.toFixed(2)}`;
+            cartSubtotal.textContent = `Rs.${subtotal.toFixed(2)}`;
+            cartTax.textContent = `Rs.${tax.toFixed(2)}`;
+            cartTotal.textContent = `Rs.${total.toFixed(2)}`;
             
             // Add event listeners to remove buttons
             document.querySelectorAll('.remove-item').forEach(button => {
