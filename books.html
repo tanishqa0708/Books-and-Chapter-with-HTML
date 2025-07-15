@@ -835,10 +835,10 @@
                             <img src="${item.image}" alt="${item.title}" class="cart-item-img">
                             <div>
                                 <div class="cart-item-title">${item.title}</div>
-                                <div>$${item.price.toFixed(2)} × ${item.quantity}</div>
+                                <div>Rs.${item.price.toFixed(2)} × ${item.quantity}</div>
                             </div>
                         </div>
-                        <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="cart-item-price">Rs.${(item.price * item.quantity).toFixed(2)}</div>
                         <div class="remove-item" data-id="${item.id}">✕</div>
                     `;
                     
@@ -865,9 +865,9 @@
             
             if (cart.length === 0) {
                 sidebarContent.innerHTML = '<p style="text-align: center; padding: 2rem;">Your cart is empty</p>';
-                cartSubtotal.textContent = '0.00';
-                cartTax.textContent = '0.00';
-                cartTotal.textContent = '0.00';
+                cartSubtotal.textContent = 'RS.0.00';
+                cartTax.textContent = 'Rs.0.00';
+                cartTotal.textContent = 'RS.0.00';
                 return;
             }
             
