@@ -416,19 +416,19 @@
                     </div>
                     <div class="order-summary-row">
                         <span>Subtotal:</span>
-                        <span id="orderSubtotal">0.00</span>
+                        <span id="orderSubtotal">Rs.0.00</span>
                     </div>
                     <div class="order-summary-row">
                         <span>Shipping:</span>
-                        <span>0.00</span>
+                        <span>Rs.0.00</span>
                     </div>
                     <div class="order-summary-row">
                         <span>Tax:</span>
-                        <span id="orderTax">0.00</span>
+                        <span id="orderTax">Rs.0.00</span>
                     </div>
                     <div class="order-summary-row order-total">
                         <span>Total:</span>
-                        <span id="orderTotal">0.00</span>
+                        <span id="orderTotal">Rs.0.00</span>
                     </div>
                 </div>
             </div>
@@ -507,12 +507,14 @@
             });
 
             // Calculate totals
-            const locale = 'en-IN';
-const options = { style: 'currency', currency: 'INR', minimumFractionDigits: 2 };
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + tax;
 
-orderSubtotal.textContent = subtotal.toLocaleString(locale, options);
-orderTax.textContent = tax.toLocaleString(locale, options);
-orderTotal.textContent = total.toLocaleString(locale, options);
+            orderSubtotal.textContent = `Rs.${subtotal.toFixed(2)}`;
+            orderTax.textContent = `Rs.${tax.toFixed(2)}`;
+            orderTotal.textContent = `Rs.${total.toFixed(2)}`;
+    
             
             // Handle form submission
             document.getElementById('paymentForm').addEventListener('submit', (e) => {
