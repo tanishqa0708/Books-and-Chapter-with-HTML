@@ -851,9 +851,9 @@
             const tax = subtotal * 0.08; // 8% tax
             const total = subtotal + tax;
             
-            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-            taxEl.textContent = `$${tax.toFixed(2)}`;
-            totalEl.textContent = `$${total.toFixed(2)}`;
+            subtotalEl.textContent = `Rs.${subtotal.toFixed(2)}`;
+            taxEl.textContent = `Rs.${tax.toFixed(2)}`;
+            totalEl.textContent = `Rs.${total.toFixed(2)}`;
             
             // Update sidebar cart
             updateSidebarCart();
