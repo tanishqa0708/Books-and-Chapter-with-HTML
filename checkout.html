@@ -507,6 +507,13 @@
             });
 
             // Calculate totals
+            const locale = 'en-IN';
+const options = { style: 'currency', currency: 'INR', minimumFractionDigits: 2 };
+
+orderSubtotal.textContent = subtotal.toLocaleString(locale, options);
+orderTax.textContent = tax.toLocaleString(locale, options);
+orderTotal.textContent = total.toLocaleString(locale, options);
+
             const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
             const tax = subtotal * 0.08; // 8% tax
             const total = subtotal + tax;
