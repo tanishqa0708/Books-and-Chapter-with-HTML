@@ -501,7 +501,7 @@
                 orderItem.className = 'order-item';
                 orderItem.innerHTML = `
                     <div class="order-item-title">${item.title} (×${item.quantity})</div>
-                    <div class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                    <div class="order-item-price">Rs.${(item.price * item.quantity).toFixed(2)}</div>
                 `;
                 orderItems.appendChild(orderItem);
             });
