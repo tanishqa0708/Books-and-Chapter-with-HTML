@@ -739,7 +739,7 @@
                         <h3>${book.title}</h3>
                         <p>by ${book.author}</p>
                         <p><small>${book.genre}</small></p>
-                        <p class="book-price">Rs.${book.price.toFixed(2)}</p>
+                        <p class="book-price">$${book.price.toFixed(2)}</p>
                         <div class="book-actions">
                             <button class="rent-btn" ${book.available ? '' : 'disabled'} data-id="${book.id}">
                                 ${book.available ? 'Add to Cart' : 'Out of Stock'}
@@ -851,9 +851,9 @@
             const tax = subtotal * 0.08; // 8% tax
             const total = subtotal + tax;
             
-            subtotalEl.textContent = `Rs.${subtotal.toFixed(2)}`;
-            taxEl.textContent = `Rs.${tax.toFixed(2)}`;
-            totalEl.textContent = `Rs.${total.toFixed(2)}`;
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            taxEl.textContent = `$${tax.toFixed(2)}`;
+            totalEl.textContent = `$${total.toFixed(2)}`;
             
             // Update sidebar cart
             updateSidebarCart();
@@ -883,23 +883,18 @@
                             <div>$${item.price.toFixed(2)} × ${item.quantity}</div>
                         </div>
                     </div>
-                    <div class="cart-item-price">Rs.${(item.price * item.quantity).toFixed(2)}</div>
+                    <div class="cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
                     <div class="remove-item" data-id="${item.id}">✕</div>
                 `;
                 
                 sidebarContent.appendChild(cartItem);
             });
-            const locale = 'en-IN';
-const options = { style: 'currency', currency: 'INR', minimumFractionDigits: 2 };
-
-orderSubtotal.textContent = subtotal.toLocaleString(locale, options);
-orderTax.textContent = tax.toLocaleString(locale, options);
-orderTotal.textContent = total.toLocaleString(locale, options);
+            
             const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
             const tax = subtotal * 0.08; // 8% tax
             const total = subtotal + tax;
             
-            cartSubtotal.textContent = `Rs.${subtotal.toFixed(2)}`;
+            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
             cartTax.textContent = `$${tax.toFixed(2)}`;
             cartTotal.textContent = `$${total.toFixed(2)}`;
             
