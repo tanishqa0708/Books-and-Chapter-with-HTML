@@ -739,7 +739,7 @@
                         <h3>${book.title}</h3>
                         <p>by ${book.author}</p>
                         <p><small>${book.genre}</small></p>
-                        <p class="book-price">$${book.price.toFixed(2)}</p>
+                        <p class="book-price">Rs.${book.price.toFixed(2)}</p>
                         <div class="book-actions">
                             <button class="rent-btn" ${book.available ? '' : 'disabled'} data-id="${book.id}">
                                 ${book.available ? 'Add to Cart' : 'Out of Stock'}
